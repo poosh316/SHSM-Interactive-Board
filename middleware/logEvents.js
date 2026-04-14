@@ -21,7 +21,7 @@ const logEvent = async (message, dest) => {
         //writes the message to the file
         fs.appendFileSync(path.join(__dirname, "..", "logs", destination)+ ".txt", message + "\n");
         //writes the message to the console
-        console.log(message + "  " + destination);
+        // console.log("\"" + message + "\" to: " + destination);
     }catch (err){
         //catches any errors with file makeing
         console.log(err);

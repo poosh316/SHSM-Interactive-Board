@@ -8,13 +8,15 @@ const PORT = process.env.PORT || 3500; //sets the port as 3500
 
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
 app.use((req, res, next) => {
+    console.log("\"" + req.path + "\" to: " + "actionLog");
     actionLog(req.path);
     next();//go to the next middleware function
 });
 
 
-app.use('/', require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
+app.use(require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
+app.use("/int", require('./routes/interactSubdir') )
 //an exception case if the link is wrong it will send a 404 error
 app.get(/.*/, (req, res) => {
     res.status(404).sendFile('./views/error.html', { root: __dirname }); // send the 404.html file to the client if the requested page is not found
