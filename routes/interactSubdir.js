@@ -10,4 +10,5 @@ router.get(/^\/$|^\/interact(\/)?$|^\/interact(.html)?$/, (req, res) => {
 router.get(/^\/lights(\/)?(.html)?$/, (req, res) => {
     res.sendFile(path.join(__dirname, "..", "views", "interactPages", "lights.html"));
 });
+
 module.exports = router;

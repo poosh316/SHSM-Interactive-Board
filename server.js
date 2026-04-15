@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 });
 
 
-app.use(require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
+app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
 app.use("/int", require('./routes/interactSubdir') )
 //an exception case if the link is wrong it will send a 404 error
@@ -22,4 +22,5 @@ app.get(/.*/, (req, res) => {
     res.status(404).sendFile('./views/error.html', { root: __dirname }); // send the 404.html file to the client if the requested page is not found
 });
 //starts listening on the port
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = app;
