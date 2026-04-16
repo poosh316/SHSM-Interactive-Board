@@ -22,5 +22,4 @@ app.get(/.*/, (req, res) => {
     res.status(404).sendFile('./views/error.html', { root: __dirname }); // send the 404.html file to the client if the requested page is not found
 });
 //starts listening on the port
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-module.exports = app;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
