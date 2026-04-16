@@ -19,9 +19,9 @@ app.use(require('./routes/root'));//relocates the user to the link relating to t
 app.use("/int", require('./routes/interactSubdir') )
 //an exception case if the link is wrong it will send a 404 error
 app.get(/.*/, (req, res) => {
-    res.status(404).sendFile('./views/error.html', { root: __dirname }); // send the 404.html file to the client if the requested page is not found
+    res.status(404).sendFile(path.join(__dirname,'views','error')); // send the 404.html file to the client if the requested page is not found
 });
 //starts listening on the port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+//"__comment": "i got this from \"how to deploy an express/node app to verce; | Express/Node Vercel Deployment",
 module.exports = app;
