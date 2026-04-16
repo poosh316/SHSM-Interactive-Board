@@ -1,0 +1,56 @@
+#signup {
+    border-style: solid;
+    border-radius: 3px;
+    border-color:rgb(235, 81, 255);
+}
+.navBar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(118, 58, 150);
+}
+.navBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.navBar li {
+    float: left;
+}
+.navBar ul li a {
+    display: block;
+    font-family: verdana;
+    padding: 14px 16px;
+    height: 4%;
+    background-color: white;
+    color: rgb(65, 35, 81);
+}
+.navBar ul li a:active, .navBar ul li a:hover {
+    background-color: rgb(156, 156, 156);
+}
+
+h1 {
+    font-family: 'trebuchet MS';
+    font-size: 300%;
+    text-align: center;
+    color: rgb(65, 35, 81);
+}
+h2 {
+    font-family: 'trebuchet MS';
+    font-size: 160%;
+    text-align: left;
+    color: rgb(65, 35, 81);
+    text-decoration: underline;
+}
+
+a:visited {
+    color: rgb(65, 35, 81);
+}
+
+p {
+    font-family: verdana;
+}
