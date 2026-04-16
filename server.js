@@ -2,14 +2,14 @@
 const express = require('express'); //express is the way that we are getting adn using user requests
 const app = express(); //the app is to hold an express object
 const path = require('path'); //importing the path npm module to make sure that directories work for all OS
-const {logEvent, debugLog, actionLog} = require(path.join(__dirname, 'middleware', 'logEvents.js')); // functions from the middleware of log events for back end debuging and information
+// const {logEvent, debugLog, actionLog} = require(path.join(__dirname, 'middleware', 'logEvents.js')); // functions from the middleware of log events for back end debuging and information
 const PORT = process.env.PORT || 3500; //sets the port as 3500
 
 
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
 app.use((req, res, next) => {
-    console.log("\"" + req.path + "\" to: " + "actionLog");
-    actionLog(req.path);
+    // console.log("\"" + req.path + "\" to: " + "actionLog");
+    // actionLog(req.path);
     next();//go to the next middleware function
 });
 
@@ -23,3 +23,5 @@ app.get(/.*/, (req, res) => {
 });
 //starts listening on the port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+module.exports = app;
