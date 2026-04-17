@@ -7,6 +7,14 @@
     <title>drone</title>
 
 	<link href="../../styles.css" rel="stylesheet" />
+    <style>
+        span {
+            width: 40%;
+            margin: 4%;
+        }
+        img {width: 100%;}
+    </style>
+
 </head>
 <body>
     <div class="navBar">
@@ -14,7 +22,13 @@
             <li><img src="../../images/SHSMLogo.jpg" alt="SHSM" style="height:8%" /></li>
             <li><a href="../home.html">Home</a></li>
             <li><a href="../about.html">About</a></li>
-            <li><a href="lights.html">Interact</a></li>
+            <li class="dropdown">
+                <a href="javasctipt:void(0)" class="dropbtn">Interact</a>
+                <div class="dropdownList">
+                    <a href="lights.html">Lights</a>
+                    <a href="drone.html">Drone</a>
+                </div>
+            </li>
             <li><a id="signup" href="../signup.html">Sign Up</a></li>
         </ul>
     </div>
@@ -22,6 +36,13 @@
     <br>
     <br>
     <br>
+
+    <span>
+        <button onclick="">Click to run the drone for 20 seconds</button>
+    </span>
+    <span>
+        <img id="drone" src="../../images/droneOff.png" alt="drone" />
+    </span>
 
 	<script src="script.js"></script>
 </body>
