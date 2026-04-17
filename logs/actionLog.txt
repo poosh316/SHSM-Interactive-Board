@@ -295,3 +295,4 @@
 /styles.css
 /images/SHSMLogo.jpg
 /script.js
+/styles.css
