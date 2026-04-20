@@ -1,0 +1,33 @@
+{
+  "name": "shsm-interactive-board",
+  "version": "1.0.0",
+  "description": "\"# SHSM-Interactive-Board\"",
+  "homepage": "https://github.com/poosh316/SHSM-Interactive-Board#readme",
+  "bugs": {
+    "url": "https://github.com/poosh316/SHSM-Interactive-Board/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poosh316/SHSM-Interactive-Board.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "date": "^2.0.6",
+    "date-fns": "^4.1.0",
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security",
+    "nodemon": "^3.1.14",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
