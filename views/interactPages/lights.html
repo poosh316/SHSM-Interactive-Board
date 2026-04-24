@@ -11,11 +11,11 @@
 <body>
     <div class="navBar">
         <ul>
-            <li><img src="../images/SHSMLogo.jpg" alt="SHSM" style="height:8%" /></li>
+            <li><a id="logo" href="../home"><img src="../images/SHSMLogo.png" alt="SHSM" style="height:100%" /></a></li>
             <li><a href="../home">Home</a></li>
             <li><a href="../about">About</a></li>
             <li class="dropdown">
-                <a href="javasctipt:void(0)" class="dropbtn">Interact</a>
+                <a href="javascript:void(0)" class="dropbtn">Interact</a>
                 <div class="dropdownList">
                     <a href="lights">Lights</a>
                     <a href="drone">Drone</a>
@@ -29,13 +29,20 @@
     <br>
     <br>
 
-    <p>text</p>
-    <ul id = lightChoices>
-        <li><p>  red</p><input type="text" value="255"></li>
-        <li><p>green</p><input type="text" value="255"></li>
-        <li><p> blue</p><input type="text" value="255"></li>
-    </ul>
-    <button id="on">on</button>
+    <span>
+        <p>red</p>
+        <input id="red" type="range" min="0" max="255" value="0" />
+        
+        <p>green</p>
+        <input id="green" type="range" min="0" max="255" value="0" />
+
+        <p>blue</p>
+        <input id="blue" type="range" min="0" max="255" value="0" />
+    </span>
+    <span id="colour">
+
+    </span>
+
 	<script src="../script.js"></script>
     <script src="../interact.js"></script>
 </body>

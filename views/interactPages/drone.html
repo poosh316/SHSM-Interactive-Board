@@ -19,11 +19,11 @@
 <body>
     <div class="navBar">
         <ul>
-            <li><img src="../images/SHSMLogo.jpg" alt="SHSM" style="height:8%" /></li>
+            <li><a id="logo" href="../home"><img src="../images/SHSMLogo.png" alt="SHSM" style="height:100%" /></a></li>
             <li><a href="../home">Home</a></li>
             <li><a href="../about">About</a></li>
             <li class="dropdown">
-                <a href="javasctipt:void(0)" class="dropbtn">Interact</a>
+                <a href="javascript:void(0)" class="dropbtn">Interact</a>
                 <div class="dropdownList">
                     <a href="lights">Lights</a>
                     <a href="drone">Drone</a>
@@ -35,14 +35,11 @@
 
     <br>
     <br>
-    <br>
 
-    <span>
-        <button onclick="">Click to run the drone for 20 seconds</button>
-    </span>
-    <span>
-        <img id="drone" src="../images/droneOff.png" alt="drone" />
-    </span>
+    <img id="drone" src="../images/droneOff.png" alt="drone" />
+    <br>
+    <br>
+    <button id="droneBtn">Click to run the drone for 20 seconds</button>
 
 	<script src="../script.js"></script>
 </body>
