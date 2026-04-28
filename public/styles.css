@@ -15,6 +15,16 @@
     height: 7%;
 }
 
+#sample {
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    width:20%; 
+    height:20%; 
+    display: inline-block;
+    margin: 10%;
+}
+
 li .dropdown {
     display: inline-block;
 }
