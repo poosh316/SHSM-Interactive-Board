@@ -25,8 +25,8 @@
     border-color: black;
     width:20%; 
     height:20%; 
-    display: inline-block;
     margin: 10%;
+    float: right;
 }
 
 .disclaimer {
