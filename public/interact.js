@@ -10,6 +10,7 @@ submitButton.addEventListener("click", () => {
     fetch("/info", {
         method: "POST",
         body: JSON.stringify({
+            type: 'lights',
             red: lightChoices.children[0].children[1].value,
             green: lightChoices.children[1].children[1].value,
             blue: lightChoices.children[2].children[1].value
