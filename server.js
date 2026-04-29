@@ -11,7 +11,7 @@ const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'))
 // console.log(con.query("SELECT * FROM mytable"));
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
 app.use((req, res, next) => {
-    console.log("\"" + req.path + "\" to: " + "actionLog");
+    // console.log("\"" + req.path + "\" to: " + "actionLog");
     actionLog(req.path);
     // console.log(JSON.stringify(req.body));
     next();//go to the next middleware function
