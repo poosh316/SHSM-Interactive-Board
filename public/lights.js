@@ -6,6 +6,7 @@ const redSlider = document.getElementById('red');
 const greenSlider = document.getElementById('green');
 const blueSlider = document.getElementById('blue');
 
+
 redSlider.addEventListener("input", () => {
     sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
 });

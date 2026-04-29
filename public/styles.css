@@ -15,6 +15,10 @@
     height: 7%;
 }
 
+#drone {
+    max-width: 600px;
+}
+
 #sample {
     border-style: solid;
     border-width: 2px;
@@ -23,6 +27,15 @@
     height:20%; 
     display: inline-block;
     margin: 10%;
+}
+
+.disclaimer {
+    width: 70%;
+    margin: auto;
+    margin-bottom: 4%;
+    padding: 4%;
+    background-color: rgb(212, 198, 255);
+    border-radius: 8px;
 }
 
 li .dropdown {
@@ -108,7 +121,7 @@ span {
 button {
     background-color: rgb(118, 58, 150);
     text-align: center;
-    vertical-align: center;
+    margin: auto;
     color: white;
     font-family: verdana;
     font-size: 20px;
