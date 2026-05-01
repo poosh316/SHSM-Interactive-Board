@@ -2,7 +2,7 @@
 const express = require('express'); //express is the way that we are getting adn using user requests
 const app = express(); //the app is to hold an express object
 const path = require('path'); //importing the path npm module to make sure that directories work for all OS
-const { logEvent, debugLog, actionLog } = require(path.join(__dirname, 'middleware', 'logEvents.js')); // functions from the middleware of log events for back end debuging and information
+const { logEvent, debugLog, actionLog, errorLog } = require(path.join(__dirname, 'middleware', 'logEvents.js')); // functions from the middleware of log events for back end debuging and information
 const PORT = process.env.PORT || 3500; //sets the port as 3500
 const mysql = require('mysql2');
 const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'))
@@ -32,14 +32,23 @@ app.post("/info", async (req, res) => {
     try {
         console.log(req.body);
         if (req.body.type == 'lights') {
-            await doQuery(`update lights set lightValue = ${req.body.red} where lightColor = "red"`);
-            await doQuery(`update lights set lightValue = ${req.body.green} where lightColor = "green"`);
-            await doQuery(`update lights set lightValue = ${req.body.blue} where lightColor = "blue"`);
-            // await console.log("not done yet");
-            await doQuery('SELECT * FROM LIGHTS');
+            await doQuery(`update lights set lightValue = ${req.body.red} where lightColor = "red"`)
+            await doQuery(`update lights set lightValue = ${req.body.green} where lightColor = "green"`)
+            await doQuery(`update lights set lightValue = ${req.body.blue} where lightColor = "blue"`)
+            await doQuery('SELECT * FROM LIGHTS').then(results => {
+                console.log(results);
+                console.log(results[0]['lightColor']);
+                const sqlLogMes = `updated lights: ` +
+                `${results[0][Object.keys(results[0])[1]]}:${results[0][Object.keys(results[0])[2]]} `+
+                `${results[1][Object.keys(results[1])[1]]}:${results[1][Object.keys(results[1])[2]]} `+
+                `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]}`
+                logEvent(sqlLogMes,"/dataBase");
+            })
+            
         }
     } catch (err) {
-        throw err;
+        console.log(err);
+        errorLog(err);
     }
 });
 
@@ -51,20 +60,27 @@ app.get(/.*/, (req, res) => {
 
 
 //starts listening on the port
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 const doQuery = async (sql) => {
-    try {
-        const data = pool.query(sql, (err, results, fields) => {
-            if (err) {
-                throw err;
-            }
-            console.log(results);
-            return results
-        });
-        // console.log();
-    } catch (err) {
-        throw err;
-    }
+    return new Promise((resolve, reject) => {
+        try {
+            const data = pool.query(sql, (err, results, fields) => {
+                if (err) {
+                    console.log("there was an error");
+                    console.log(err);
+                    errorLog(err);
+                    reject(err);
+                }
+                // console.log(results);
+                resolve(results);
+            });
+            // console.log();
+        } catch (err) {
+            // throw err;
+            console.log(err);
+            errorLog(err);
+        }
+    })
 }
