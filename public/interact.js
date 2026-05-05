@@ -5,21 +5,59 @@ lightChoices = document.getElementById("lightChoices");
 currentWindow = document.URL.split('/')[document.URL.split('/').length - 1];
 
 console.log(currentWindow);
-
 const drone = document.getElementById('drone');
 const droneBtn = document.getElementById('droneBtn');
 
+console.log(currentWindow);
+
 if (currentWindow == "drone") {
+    var state = 0
+    fetch('/info/drone/droneOn/1', {
+        method: "GET"
+    }).then(async response => {
+        res = await response.json();
+        console.log(res);
+        console.log(res[0].droneOn);
+        if (res[0].droneOn == 1) {
+            state = 1
+            drone.src = "/images/droneOn.gif"
+        }
+    })
+    setInterval(async () => {
+        fetch('/info/drone/droneOn/1', {
+            method: "GET"
+        }).then(async response => {
+            res = await response.json();
+            // console.log(res);
+            // console.log(res[0].droneOn);
+            if (res[0].droneOn == 1) {
+                if(state == 0){
+                    drone.src = "/images/droneOn.gif"
+                }
+                state = 1
+            }else{
+                if (state == 1){
+                drone.src = "/images/droneOff.png"
+                }
+                state = 0
+            }
+        })
+    }, 1000)
     droneBtn.addEventListener("click", () => {
-        drone.src = "../../images/droneOn.gif";
+        drone.src = "/images/droneOn.gif";
+        state = 1;
+        fetch("/info", {
+            method: "POST",
+            body: JSON.stringify({
+                type: 'drone',
+                droneOn: 1
+            }),
+            headers: { "Content-Type": "application/json" }
+        })
     });
 }
 if (currentWindow == "lights") {
-    console.log("hi");
-    console.log(lightChoices.children[1].value);
     submitButton.addEventListener("click", () => {
-        console.log("banana");
-        console.log(lightChoices.children[1].value)
         fetch("/info", {
             method: "POST",
             body: JSON.stringify({

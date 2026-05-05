@@ -12,7 +12,11 @@ const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'))
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
 app.use((req, res, next) => {
     // console.log("\"" + req.path + "\" to: " + "actionLog");
-    actionLog(req.path);
+    if(/^\/info/.test(req.path)==false){
+        actionLog(req.path);
+    }else{
+        logEvent(req.path,"requestLog");
+    }
     // console.log(JSON.stringify(req.body));
     next();//go to the next middleware function
 });
@@ -28,6 +32,18 @@ app.use("/", require('./routes/root'));//relocates the user to the link relating
 app.use("/int", require('./routes/interactSubdir'));
 //an exception case if the link is wrong it will send a 404 error
 
+app.get(/^\/info/, async (req, res) => {
+    if (req.url.split('/').length - 2 == 3) {
+        const data = req.url.split("/");
+        await doQuery(`SELECT ${data[3]} from ${data[2]} where id = ${data[4]}`).then(results => {
+            // console.log(results);
+            res.json(results);
+        })
+    }else if (req.url.split('/').length - 2 == 2){
+
+    }
+})
+
 app.post("/info", async (req, res) => {
     try {
         console.log(req.body);
@@ -37,14 +53,21 @@ app.post("/info", async (req, res) => {
             await doQuery(`update lights set lightValue = ${req.body.blue} where lightColor = "blue"`)
             await doQuery('SELECT * FROM LIGHTS').then(results => {
                 console.log(results);
-                console.log(results[0]['lightColor']);
                 const sqlLogMes = `updated lights: ` +
-                `${results[0][Object.keys(results[0])[1]]}:${results[0][Object.keys(results[0])[2]]} `+
-                `${results[1][Object.keys(results[1])[1]]}:${results[1][Object.keys(results[1])[2]]} `+
-                `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]}`
-                logEvent(sqlLogMes,"/dataBase");
+                    `${results[0][Object.keys(results[0])[1]]}:${results[0][Object.keys(results[0])[2]]} ` +
+                    `${results[1][Object.keys(results[1])[1]]}:${results[1][Object.keys(results[1])[2]]} ` +
+                    `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]}`
+                logEvent(sqlLogMes, "/dataBase");
             })
-            
+
+        } else if (req.body.type == 'drone') {
+            console.log("chicken")
+            await doQuery(`UPDATE DRONE SET DroneOn = ${req.body.droneOn} where id = 1`)
+            await doQuery('SELECT * FROM LIGHTS').then(results => {
+                const sqlLogMes = `updated drone` +
+                    `drone ` + `${results[0][Object.keys(results[0])[0]]}: ` + `${results[0][Object.keys(results[0])[1]]}`
+                logEvent(sqlLogMes, "/dataBase")
+            })
         }
     } catch (err) {
         console.log(err);

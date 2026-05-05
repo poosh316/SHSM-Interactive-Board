@@ -29,7 +29,7 @@ const logEvent = async (message, dest) => {
 }
 //this is the general logging for every event
 const actionLog = async (newPath) => {
-    logEvent(newPath, 'actionLog');
+    logEvent(newPath, '/actionLog');
 }
 //debuging log for developers specificly
 const debugLog = async (msg) => {
