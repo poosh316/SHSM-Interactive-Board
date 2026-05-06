@@ -37,7 +37,7 @@ const debugLog = async (msg) => {
 }
 //log for whenever there is an error
 const errorLog = async (err) => {
-    logEvent(msg, 'error');
+    logEvent(err, 'error');
 }
 //exports the functions so that servr.js can access it
-module.exports = {logEvent, debugLog, actionLog}
+module.exports = {logEvent, debugLog, actionLog, errorLog};
