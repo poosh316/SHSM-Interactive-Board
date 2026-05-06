@@ -20,22 +20,45 @@
 }
 
 #sample {
+    margin: auto;
     border-style: solid;
     border-width: 2px;
     border-color: black;
-    width:20%; 
-    height:20%; 
-    margin: 10%;
-    float: right;
+    width:70%; 
+    height:80%;
 }
 
 .disclaimer {
     width: 70%;
     margin: auto;
-    margin-bottom: 4%;
-    padding: 4%;
+    margin-bottom: 4px;
+    padding: 2px;
     background-color: rgb(212, 198, 255);
     border-radius: 8px;
+    text-align: center;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 100%;
+    background-color: rgb(65, 35, 81);
+    border-radius: 10px;
+}
+.slider:hover {
+    background-color: rgb(118, 58, 150);
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
 }
 
 li .dropdown {
@@ -101,7 +124,7 @@ h3 {
 }
 h4 {
     font-family: 'trebuchet MS';
-    font-size: 120%;
+    font-size: 100%;
     color: rgb(65, 35, 81);
 }
 
