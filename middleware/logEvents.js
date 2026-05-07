@@ -29,11 +29,15 @@ const logEvent = async (message, dest) => {
 }
 //this is the general logging for every event
 const actionLog = async (newPath) => {
-    logEvent(newPath, 'actionLog');
+    logEvent(newPath, '/actionLog');
 }
 //debuging log for developers specificly
 const debugLog = async (msg) => {
     logEvent(msg, 'debug');
 }
+//log for whenever there is an error
+const errorLog = async (err) => {
+    logEvent(err, 'error');
+}
 //exports the functions so that servr.js can access it
-module.exports = {logEvent, debugLog, actionLog}
+module.exports = {logEvent, debugLog, actionLog, errorLog};
