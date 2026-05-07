@@ -1,6 +1,6 @@
 
 console.log("starting script");
-const submitButton = document.getElementById("on")
+const submitButton = document.getElementById("submit")
 const lightChoices = document.getElementById("lightChoices");
 const currentWindow = document.URL.split('/')[document.URL.split('/').length - 1];
 

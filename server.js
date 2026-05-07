@@ -74,14 +74,14 @@ app.post("/info", async (req, res) => {
                     if (req.body.droneOn == 1) {
                         setTimeout(async () => {
                             console.log("stopping")
-                            await doQuery(`UPDATE DRONE SET oneOn = 0 where id = 1`)
+                            await doQuery(`UPDATE DRONE SET droneOn = 0 where id = 1`)
                             await doQuery('SELECT * FROM DRONE').then(results => {
                                 const sqlLogMes = `updated drone` +
                                     `drone ` + `${results[0][Object.keys(results[0])[0]]}: ` + `${results[0][Object.keys(results[0])[1]]}`
                                 logEvent(sqlLogMes, "/dataBase");
 
                             })
-                        },20000)
+                        },10000)
                     }
                 }
             })
