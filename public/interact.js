@@ -1,3 +1,7 @@
+const sample = document.getElementById("sample");
+const redSlider = document.getElementById('red');
+const greenSlider = document.getElementById('green');
+const blueSlider = document.getElementById('blue');
 
 console.log("starting script");
 const submitButton = document.getElementById("submit")
@@ -9,6 +13,7 @@ const drone = document.getElementById('drone');
 const droneBtn = document.getElementById('droneBtn');
 
 console.log(currentWindow);
+
 
 if (currentWindow == "drone") {
     var state = 0;
@@ -58,17 +63,29 @@ if (currentWindow == "drone") {
         }
     });
 }
+
+
 if (currentWindow == "lights") {
     submitButton.addEventListener("click", () => {
         fetch("/info", {
             method: "POST",
             body: JSON.stringify({
                 type: 'lights',
-                red: lightChoices.children[1].value,
-                green: lightChoices.children[3].value,
-                blue: lightChoices.children[5].value
+                red: redSlider.value,
+                green: greenSlider.value,
+                blue: blueSlider.value
             }),
             headers: { "Content-Type": "application/json" }
         });
+    });
+
+    redSlider.addEventListener("input", () => {
+        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+    });
+    greenSlider.addEventListener("input", () => {
+        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+    });
+    blueSlider.addEventListener("input", () => {
+        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
     });
 }

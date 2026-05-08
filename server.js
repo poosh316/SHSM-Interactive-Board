@@ -55,8 +55,8 @@ app.post("/info", async (req, res) => {
                 console.log(results);
                 const sqlLogMes = `updated lights: ` +
                     `${results[0][Object.keys(results[0])[1]]}:${results[0][Object.keys(results[0])[2]]} ` +
-                    `${results[1][Object.keys(results[1])[1]]}:${results[1][Object.keys(results[1])[2]]} ` +
-                    `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]}`
+                    `${results[1][Object.keys(results[1])[1]]}:${results[1][Object.keys(results[1])[2]]}`   +
+                    `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]} `
                 logEvent(sqlLogMes, "/dataBase");
             })
 
