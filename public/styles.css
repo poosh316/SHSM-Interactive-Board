@@ -38,27 +38,27 @@
     text-align: center;
 }
 
-.slider {
+.colourSlider {
     -webkit-appearance: none;
     appearance: none;
-    height: 20px;
+    height: 40px;
     width: 100%;
     background-color: rgb(65, 35, 81);
     border-radius: 10px;
 }
-.slider:hover {
+.colourSlider:hover {
     background-color: rgb(118, 58, 150);
 }
-.slider::-webkit-slider-thumb {
+.colourSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    height: 25px;
-    width: 25px;
+    height: 50px;
+    width: 20px;
     background-color: white;
-    border-radius: 50%;
+    border-radius: 25%;
     border-style: solid;
     border-width: 1px;
-    border-color: black;
+    border-color: rgb(156, 156, 156);
 }
 
 li .dropdown {

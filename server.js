@@ -51,7 +51,7 @@ app.post("/info", async (req, res) => {
             await doQuery(`update lights set lightValue = ${req.body.red} where lightColor = "red"`)
             await doQuery(`update lights set lightValue = ${req.body.green} where lightColor = "green"`)
             await doQuery(`update lights set lightValue = ${req.body.blue} where lightColor = "blue"`)
-            await doQuery('SELECT * FROM LIGHTS').then(results => {
+            await doQuery('SELECT * FROM lights').then(results => {
                 console.log(results);
                 const sqlLogMes = `updated lights: ` +
                     `${results[0][Object.keys(results[0])[1]]}:${results[0][Object.keys(results[0])[2]]} ` +
@@ -61,11 +61,11 @@ app.post("/info", async (req, res) => {
             })
 
         } else if (req.body.type == 'drone') {
-            await doQuery('SELECT DroneON FROM DRONE').then(async (val) => {
+            await doQuery('SELECT DroneOnFROM drone').then(async (val) => {
                 if (val[0][Object.keys(val[0])[0]] != req.body.droneOn) {
                     console.log("working");
-                    await doQuery(`UPDATE DRONE SET DroneOn = ${req.body.droneOn} where id = 1`)
-                    await doQuery('SELECT * FROM DRONE').then(results => {
+                    await doQuery(`UPDATE drone SET DroneOn = ${req.body.droneOn} where id = 1`)
+                    await doQuery('SELECT * FROM drone').then(results => {
                         const sqlLogMes = `updated drone` +
                             `drone ` + `${results[0][Object.keys(results[0])[0]]}: ` + `${results[0][Object.keys(results[0])[1]]}`
                         logEvent(sqlLogMes, "/dataBase")
@@ -74,8 +74,8 @@ app.post("/info", async (req, res) => {
                     if (req.body.droneOn == 1) {
                         setTimeout(async () => {
                             console.log("stopping")
-                            await doQuery(`UPDATE DRONE SET droneOn = 0 where id = 1`)
-                            await doQuery('SELECT * FROM DRONE').then(results => {
+                            await doQuery(`UPDATE drone SET droneOn = 0 where id = 1`)
+                            await doQuery('SELECT * FROM drone').then(results => {
                                 const sqlLogMes = `updated drone` +
                                     `drone ` + `${results[0][Object.keys(results[0])[0]]}: ` + `${results[0][Object.keys(results[0])[1]]}`
                                 logEvent(sqlLogMes, "/dataBase");
@@ -102,7 +102,7 @@ app.get(/.*/, (req, res) => {
 //starts listening on the port
 app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`);
-    await doQuery('UPDATE DRONE SET DRONEON = 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
+    await doQuery('UPDATE drone SET droneOn= 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
 });
 
 
