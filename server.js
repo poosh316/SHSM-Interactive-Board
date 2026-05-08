@@ -21,15 +21,20 @@ app.use((req, res, next) => {
     next();//go to the next middleware function
 });
 
+
 app.use(express.json());
-
-
-app.use(express.static('public')); //make files in folder public accessible 
-// //it does make the actual pages in the public folder accessible by typing them in so that needs to be changed
 
 app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
 app.use("/int", require('./routes/interactSubdir'));
+
+
+//make files in folder public accessible 
+app.use('/', express.static(path.join(__dirname, '/public')));
+
+app.use('/', express.static(path.join(__dirname, '/build')));
+
+
 //an exception case if the link is wrong it will send a 404 error
 
 app.get(/^\/info/, async (req, res) => {
@@ -95,7 +100,6 @@ app.post("/info", async (req, res) => {
 app.get(/.*/, (req, res) => {
     res.status(404).sendFile('./views/error.html', { root: __dirname }); // send the 404.html file to the client if the requested page is not found
 });
-
 
 
 
