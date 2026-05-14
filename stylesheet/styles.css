@@ -12,10 +12,11 @@
 }
 
 #logo {
-    height: 7%;
+    height: 60px;
 }
 
 #drone {
+    width: 100%;
     max-width: 500px;
 }
 
@@ -68,6 +69,15 @@
 .colourSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
+    height: 50px;
+    width: 20px;
+    background-color: white;
+    border-radius: 25%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(156, 156, 156);
+}
+.colourSlider::-moz-range-thumb {
     height: 50px;
     width: 20px;
     background-color: white;
@@ -131,6 +141,7 @@ h1 {
     font-family: 'trebuchet MS';
     font-size: 180%;
     color: rgb(65, 35, 81);
+    text-align: center;
 }
 h2 {
     font-family: 'trebuchet MS';
