@@ -12,11 +12,12 @@
 }
 
 #logo {
-    height: 7%;
+    height: 60px;
 }
 
 #drone {
-    max-width: 600px;
+    width: 100%;
+    max-width: 500px;
 }
 
 #sample {
@@ -26,6 +27,22 @@
     border-color: black;
     width:70%; 
     height:80%;
+}
+
+.step {
+    width: 95%;
+    padding: 3%;
+}
+.step span {
+    width: 45%;
+    text-align: right;
+}
+.step span p, .step span h1 {
+    text-align: left;
+}
+.step img {
+    width: 100%;
+    margin: 10%
 }
 
 .disclaimer {
@@ -60,6 +77,15 @@
     border-width: 1px;
     border-color: rgb(156, 156, 156);
 }
+.colourSlider::-moz-range-thumb {
+    height: 50px;
+    width: 20px;
+    background-color: white;
+    border-radius: 25%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(156, 156, 156);
+}
 
 li .dropdown {
     display: inline-block;
@@ -73,11 +99,13 @@ li .dropdown {
 }
 .dropdown:hover .dropdownList {
     display: block;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .navBar {
     position: sticky;
     top: 0;
+    height: fit-content;
     width: 100%;
     background-color: white;
     border-bottom-width: 4px;
@@ -105,11 +133,15 @@ li .dropdown {
 .navBar a:active {
     background-color: rgb(156, 156, 156);
 }
+.navBar .current {
+    background: rgb(156, 156, 156);
+}
 
 h1 {
     font-family: 'trebuchet MS';
     font-size: 180%;
     color: rgb(65, 35, 81);
+    text-align: center;
 }
 h2 {
     font-family: 'trebuchet MS';
@@ -124,7 +156,7 @@ h3 {
 }
 h4 {
     font-family: 'trebuchet MS';
-    font-size: 100%;
+    font-size: 120%;
     color: rgb(65, 35, 81);
 }
 

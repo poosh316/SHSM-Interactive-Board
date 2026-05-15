@@ -1,6 +1,6 @@
 //imports
 //date and uuid are not used yet but will be good for better logs
-const { format } = require("date");
+const { format } = require("date-fns");
 const {v4: uuid } = require('uuid');
 const fs = require('fs');//lets us write and read files
 const path = require('path');//mostly for path.join
@@ -19,7 +19,7 @@ const logEvent = async (message, dest) => {
             fs.writeFileSync(path.join(__dirname, "..", "logs", destination) + ".txt", "");
         }
         //writes the message to the file
-        fs.appendFileSync(path.join(__dirname, "..", "logs", destination)+ ".txt", message + "\n");
+        fs.appendFileSync(path.join(__dirname, "..", "logs", destination)+ ".txt", `${format(new Date(), "MM/dd/yyyy/\tHH:mm:ss:\t")}` + message + "\n");
         //writes the message to the console
         // console.log("\"" + message + "\" to: " + destination);
     }catch (err){

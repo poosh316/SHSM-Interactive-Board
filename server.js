@@ -32,7 +32,7 @@ app.use("/int", require('./routes/interactSubdir'));
 //make files in folder public accessible 
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-app.use('/', express.static(path.join(__dirname, '/build')));
+app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
 
 
 //an exception case if the link is wrong it will send a 404 error
@@ -47,12 +47,16 @@ app.get(/^\/info/, async (req, res) => {
     } else if (req.url.split('/').length - 2 == 2) {
 
     }
+    // res.sendStatus(204);
 })
 
 app.post("/info", async (req, res) => {
     try {
         console.log(req.body);
         if (req.body.type == 'lights') {
+            if(req.body.red >= 0 && req.body.red <= 255 &&
+                req.body.green >= 0 && req.body.green <= 255 &&
+                req.body.blue >= 0 && req.body.blue <= 255){
             await doQuery(`update lights set lightValue = ${req.body.red} where lightColor = "red"`)
             await doQuery(`update lights set lightValue = ${req.body.green} where lightColor = "green"`)
             await doQuery(`update lights set lightValue = ${req.body.blue} where lightColor = "blue"`)
@@ -64,9 +68,11 @@ app.post("/info", async (req, res) => {
                     `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]} `
                 logEvent(sqlLogMes, "/dataBase");
             })
-
+            }else{
+                errorLog("the user put in a bad request as: " + req.body);
+            }
         } else if (req.body.type == 'drone') {
-            await doQuery('SELECT DroneOnFROM drone').then(async (val) => {
+            await doQuery('SELECT DroneOn FROM drone').then(async (val) => {
                 if (val[0][Object.keys(val[0])[0]] != req.body.droneOn) {
                     console.log("working");
                     await doQuery(`UPDATE drone SET DroneOn = ${req.body.droneOn} where id = 1`)
@@ -94,7 +100,9 @@ app.post("/info", async (req, res) => {
     } catch (err) {
         console.log(err);
         errorLog(err);
+        // res.sendStatus(404);
     }
+    res.sendStatus(204);
 });
 
 app.get(/.*/, (req, res) => {
