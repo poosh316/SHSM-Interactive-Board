@@ -6,7 +6,11 @@ const { logEvent, debugLog, actionLog, errorLog } = require(path.join(__dirname,
 const PORT = process.env.PORT || 3500; //sets the port as 3500
 const mysql = require('mysql2');
 const { worker } = require('cluster');
-const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'))
+const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'));
+
+const session = require('express-session');
+require('dotenv').config(); 
+
 
 // console.log(con.query("SELECT * FROM mytable"));
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
@@ -22,6 +26,19 @@ app.use((req, res, next) => {
 });
 
 
+//session setup goes before routes
+app.use(session({
+  secret: 'process.env.SESSION_SECRET',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    maxAge: 600000, //10 minutes in milliseconds
+    httpOnly: true,  
+    sameSite: 'lax'   
+} 
+}));
+
+
 app.use(express.json());
 
 app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
@@ -33,6 +50,10 @@ app.use("/int", require('./routes/interactSubdir'));
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
+
+
+//check if user has extra access
+app.use("/cookies", require('./routes/cookies'));
 
 
 //an exception case if the link is wrong it will send a 404 error
