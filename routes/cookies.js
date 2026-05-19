@@ -18,14 +18,14 @@ const router = express.Router();
 // });
 
 
-// 1. The Security Middleware Function
-function checkExtraAccess(req, res, next) {
-  if (req.session && req.session.extraAccess) {
-    console.log("extra session access let them proceed");
-    return next();
-  }
-  res.status(403).sendFile(path.join(__dirname, "..", "views", "403.html"));
-}
+// // 1. The Security Middleware Function
+// function checkExtraAccess(req, res, next) {
+//   if (req.session && req.session.extraAccess) {
+//     console.log("extra session access let them proceed");
+//     return next();
+//   }
+//   res.status(403).sendFile(path.join(__dirname, "..", "views", "403.html"));
+// }
 
 // 2. The Entry Route (Sets the session flag)
 router.get('', (req, res) => {
