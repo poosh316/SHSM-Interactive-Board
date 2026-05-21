@@ -66,10 +66,14 @@ app.get(/^\/info/, async (req, res) => {
             res.json(results);
         })
     } else if (req.url.split('/').length - 2 == 2) {
-
+        const data = req.url.split("/");
+        await doQuery(`SELECT ${data[3]} from ${data[2]}`).then(results => {
+            // console.log(results);
+            res.json(results);
+        })
     }
     // res.sendStatus(204);
-})
+});
 
 app.post("/info", async (req, res) => {
     try {
