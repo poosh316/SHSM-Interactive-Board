@@ -32,7 +32,7 @@ app.use("/int", require('./routes/interactSubdir'));
 //make files in folder public accessible 
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
+// app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
 
 
 //an exception case if the link is wrong it will send a 404 error
