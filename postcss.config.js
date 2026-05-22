@@ -13,7 +13,7 @@ module.exports = {
     cssnano({  //minimize file
       preset: 'default'
     }),
-    postcssPresetEnv({ }),
+    postcssPresetEnv({ }),  //converts the css to compatible css that the browser can read
     // obfuscator({  //obfuscate file + minimize file
     //   /* options */
     //   enable: isObfscMode, // Only runs when mode is set to 'obfuscation'
