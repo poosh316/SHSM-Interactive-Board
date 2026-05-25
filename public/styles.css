@@ -70,9 +70,6 @@
     background-color: rgb(65, 35, 81);
     border-radius: 10px;
 }
-.colourSlider:hover {
-    background-color: rgb(118, 58, 150);
-}
 .colourSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
