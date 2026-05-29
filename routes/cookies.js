@@ -1,44 +1,39 @@
-// const { checkExtraAccess } = require('../middlewares/auth');
-
-//checks for ?ref=special_promo in the url and if it is there it gives the user extra access for the session
-
-const path = require('path');
+// routes/auth.js
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
-// app.get('/cookies', (req, res) => {
-// //   if (req.query.ref === 'special_promo') {
-//     console.log("extra access granted");
-//     req.session.extraAccess = true; // Sets the flag
-// //     return res.redirect('/autherized-content');
-// //   }
-// //   console.log("no extra access");
-// //   res.redirect('/');
-//     res.redirect(path.join(__dirname, "..", "views", "interactPages", "lights.html")); 
-// });
-
-
-// // 1. The Security Middleware Function
-// function checkExtraAccess(req, res, next) {
-//   if (req.session && req.session.extraAccess) {
-//     console.log("extra session access let them proceed");
-//     return next();
-//   }
-//   res.status(403).sendFile(path.join(__dirname, "..", "views", "403.html"));
-// }
-
-// 2. The Entry Route (Sets the session flag)
 router.get('', (req, res) => {
-    console.log("session flag set to true <3");
-    req.session.extraAccess = true; 
-    res.status(403).sendFile(path.join(__dirname, "..", "views", "403.html")); // Redirects to the protected route below
+    // 1. Create unique identity for this anonymous session
+    //temporary guest authentication (stateless, anonymous)
+    const guestPayload = {
+        isGuest: true,
+        guestId: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        permissions: {canWrite: true}
+    };
+
+    // 2. Sign the JWT with a 10-minute expiration
+    const token = jwt.sign(guestPayload, process.env.SESSION_SECRET, { expiresIn: '10m' });
+
+    // 3. Bake the token into an HTTP-only cookie
+    res.cookie('guest_token', token, {   //always the same token
+        httpOnly: true,       // Secures the cookie from frontend script access
+        secure: process.env.NODE_ENV === 'production', // true in production, false in local dev
+        sameSite: 'strict',   // CSRF mitigation
+        maxAge: 10 * 60 * 1000 // Force browser auto-drop after exactly 10 minutes
+    });
+
+    // 4. Return success state back to the frontend trigger
+    console.log('Guest session started (routes/cookies.js)');
+    res.status(200).json({ 
+        success: true, 
+        message: 'Guest session started successfully' 
+    });
 });
 
-// // 3. The Protected Route    //already in server.js, so not needed/here/right now
-// router.get('/', checkExtraAccess, (req, res) => {
-//   res.send('Welcome to the all-inclusive cookies club! frfr');
-// });
+module.exports = router; 
 
-// 4. Export the router so app.js can use it
-module.exports = router;
+
+
+
 

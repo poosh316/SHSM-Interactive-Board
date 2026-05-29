@@ -8,14 +8,18 @@ const mysql = require('mysql2');
 const { worker } = require('cluster');
 const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'));
 
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 require('dotenv').config(); 
+app.set('view engine', 'ejs');
+
+
 
 
 // console.log(con.query("SELECT * FROM mytable"));
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
 app.use((req, res, next) => {
-    // console.log("\"" + req.path + "\" to: " + "actionLog");
+    console.log("\"" + req.path + "\" to: " + "actionLog");
     if (/^\/info/.test(req.path) == false) {
         actionLog(req.path);
     } else {
@@ -26,20 +30,33 @@ app.use((req, res, next) => {
 });
 
 
+//-----------------------
+
+
 //session setup goes before routes
 app.use(session({
-  secret: 'process.env.SESSION_SECRET',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    maxAge: 600000, //10 minutes in milliseconds
-    httpOnly: true,  
-    sameSite: 'lax'   
-} 
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    rolling: false,
+    cookie: { 
+        maxAge: 600000, //10 minutes in milliseconds
+        httpOnly: true,  
+        sameSite: 'lax'   
+    } 
 }));
 
 
+//for sending stuff to frontend
+//...
+
+
+//-----------------------
+
+
 app.use(express.json());
+
+app.use(cookieParser(process.env.SIGNING_SECRET));
 
 app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
@@ -52,8 +69,14 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
 
 
+//-----------------------
+
+
 //check if user has extra access
 app.use("/cookies", require('./routes/cookies'));
+
+
+//-----------------------
 
 
 //an exception case if the link is wrong it will send a 404 error
@@ -133,7 +156,7 @@ app.get(/.*/, (req, res) => {
 
 
 //starts listening on the port
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Server running on port ${PORT}`);
     await doQuery('UPDATE drone SET droneOn= 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
 });
