@@ -30,9 +30,6 @@ app.use((req, res, next) => {
 });
 
 
-//-----------------------
-
-
 //session setup goes before routes
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -47,13 +44,6 @@ app.use(session({
 }));
 
 
-//for sending stuff to frontend
-//...
-
-
-//-----------------------
-
-
 app.use(express.json());
 
 app.use(cookieParser(process.env.SIGNING_SECRET));
@@ -66,17 +56,11 @@ app.use("/int", require('./routes/interactSubdir'));
 //make files in folder public accessible 
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
-
-
-//-----------------------
+// app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
 
 
 //check if user has extra access
 app.use("/cookies", require('./routes/cookies'));
-
-
-//-----------------------
 
 
 //an exception case if the link is wrong it will send a 404 error
@@ -89,10 +73,14 @@ app.get(/^\/info/, async (req, res) => {
             res.json(results);
         })
     } else if (req.url.split('/').length - 2 == 2) {
-
+        const data = req.url.split("/");
+        await doQuery(`SELECT ${data[3]} from ${data[2]}`).then(results => {
+            // console.log(results);
+            res.json(results);
+        })
     }
     // res.sendStatus(204);
-})
+});
 
 app.post("/info", async (req, res) => {
     try {

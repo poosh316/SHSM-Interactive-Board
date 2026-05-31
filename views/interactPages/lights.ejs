@@ -37,20 +37,25 @@
         </div>
         </h4>
     </div>
+    <p>Drag each slider to the right right to increase the amount of its colour, and to the left to decrease it.</p>
+    <p>When you have your desired colour, press the "Set Colour" button at the bottom to change the lights on the board to your colour!</p>
 
-    <span style="width:50%" id="lightChoices">
-        <p>red</p>
-        <input class="colourSlider" id="red" type="range" min="0" max="255" value="0" />
+
+    <div style="display:grid; grid-auto-flow:column; gap:10px;">
+        <span style="width:100%; margin:-1px;" id="lightChoices">
+            <p>red</p>
+            <input class="colourSlider" id="red" type="range" min="0" max="255" />
         
-        <p>green</p>
-        <input class="colourSlider" id="green" type="range" min="0" max="255" value="0" />
+            <p>green</p>
+            <input class="colourSlider" id="green" type="range" min="0" max="255" />
 
-        <p>blue</p>
-        <input class="colourSlider" id="blue" type="range" min="0" max="255" value="0" />
-    </span>
+            <p>blue</p>
+            <input class="colourSlider" id="blue" type="range" min="0" max="255" />
+        </span>
 
-    <div style="display:inline-block; width:45%; height:25%; padding-top: 10%;">
-        <div id="sample" style="background-color:black"></div>
+        <span style="margin:-1px; text-align:center;">
+            <span id="sample" style="display:inline-block;"></span>
+        </span>
     </div>
 
     <br>

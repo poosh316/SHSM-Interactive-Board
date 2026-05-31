@@ -66,6 +66,21 @@ if (currentWindow == "drone") {
 
 
 if (currentWindow == "lights") {
+    const setSample = async () => {
+        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+    }
+    
+    fetch('/info/lights/*', {
+        method: "GET"
+    }).then(async response => {
+        res = await response.json();
+        console.log(res);
+        redSlider.value = res[0].lightValue;
+        greenSlider.value = res[1].lightValue;
+        blueSlider.value = res[2].lightValue;
+        setSample();
+    })
+    
     submitButton.addEventListener("click", () => {
         fetch("/info", {
             method: "POST",
@@ -80,12 +95,12 @@ if (currentWindow == "lights") {
     });
 
     redSlider.addEventListener("input", () => {
-        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+        setSample();
     });
     greenSlider.addEventListener("input", () => {
-        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+        setSample();
     });
     blueSlider.addEventListener("input", () => {
-        sample.style.backgroundColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+        setSample();
     });
 }
