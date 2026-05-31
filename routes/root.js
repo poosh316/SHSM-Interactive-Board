@@ -23,6 +23,8 @@ router.get(/^\/signup(\/)?(.html)?$/, (req, res) => {
 //403.ejs  
 router.get(/^\/403(\/)?(.ejs)?$/, (req, res) => {
     const token = req.cookies.guest_token;
+
+    let isAuthenticated = false;
     
     if (token) {
         // Decode base64 JWT payload
@@ -34,8 +36,11 @@ router.get(/^\/403(\/)?(.ejs)?$/, (req, res) => {
         const currentTime = Math.floor(Date.now() / 1000);
         const secondsRemaining = payload.exp - currentTime;
 
-        res.render(path.join(__dirname, "..", "views", "403.ejs"), { secondsRemaining });
+        isAuthenticated = true;
+
+        res.render(path.join(__dirname, "..", "views", "403.ejs"), { secondsRemaining, isAuthenticated });
     } else {
+        isAuthenticated = false;
         res.redirect('error.html');
     }
 });
