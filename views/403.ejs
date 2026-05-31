@@ -8,7 +8,7 @@
 <body>
     <h1>403 Forbidden</h1>
     <a href="/home"><button>Go to home page</button></a>
-    <p>Delete route to ejstest in routes/root.js when done</p>
+    <p>Delete route to 403.ejs in routes/root.js when done</p>
     <p>parameters need to be sent in somehow</p>
     <div>
         Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>">
@@ -27,10 +27,12 @@
             if (timeLeft <= 0) {
                 clearInterval(interval);
                 timeSpan.textContent = "Session Expired";
+
+                window.location.href = '/error.html'; 
                 
                 //// Dispatch custom HTMX event to handle auto-logout
                 // document.body.dispatchEvent(new CustomEvent('session-expired'));
-                return;
+                // return;
             }
 
             // Calculate minutes and seconds
@@ -43,8 +45,6 @@
             timeLeft--;
             }, 1000);
         }
-
-        
     </script>
 </body>
 </html>

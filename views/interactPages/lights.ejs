@@ -29,7 +29,13 @@
     <br>
     
     <div class="disclaimer">
-        <h4>[time]</h4>
+        <h4>
+        <div>
+            Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>">
+                Loading...
+            </span>
+        </div>
+        </h4>
     </div>
 
     <span style="width:50%" id="lightChoices">
@@ -56,5 +62,30 @@
 
 	<script src="../script.js"></script>
     <script src="../interact.js"></script>
+    <script>
+        const timeSpan = document.getElementById('time-remaining');
+  
+        if (timeSpan) {
+            let timeLeft = parseInt(timeSpan.getAttribute('data-seconds'), 10);
+
+            const interval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                timeSpan.textContent = "Session Expired";
+                
+                return;
+            }
+
+            // Calculate minutes and seconds
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            // Display formatted time (e.g., 14:05)
+            timeSpan.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            timeLeft--;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
