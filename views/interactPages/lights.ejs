@@ -29,16 +29,23 @@
     <br>
     
     <div class="disclaimer">
-        <h4>[time]</h4>
+        <h4>
+        <div>
+            Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>">
+                Loading...
+            </span>
+        </div>
+        </h4>
     </div>
     <p>Drag each slider to the right right to increase the amount of its colour, and to the left to decrease it.</p>
     <p>When you have your desired colour, press the "Set Colour" button at the bottom to change the lights on the board to your colour!</p>
+
 
     <div style="display:grid; grid-auto-flow:column; gap:10px;">
         <span style="width:100%; margin:-1px;" id="lightChoices">
             <p>red</p>
             <input class="colourSlider" id="red" type="range" min="0" max="255" />
-            
+        
             <p>green</p>
             <input class="colourSlider" id="green" type="range" min="0" max="255" />
 
@@ -50,13 +57,61 @@
             <span id="sample" style="display:inline-block;"></span>
         </span>
     </div>
+
     <br>
     <br>
 
     <button id="submit">Set Colour</button>
 
 
+
+    <div id="auth-status-container">
+        <% if (isAuthenticated) { %>
+            <!-- Show this text if the cookie exists and JWT is valid -->
+            <p>Welcome back, user!: Logout</p>
+        <% } else { %>
+            <!-- Show this text if there is no valid cookie -->
+            <p>Hello, guest!: Login</p>
+        <% } %>
+    </div>
+    <!--you will also need to change it bellow in the script where it says
+    document.getElementById('auth-status-container').innerHTML-->
+
+
+
 	<script src="../script.js"></script>
     <script src="../interact.js"></script>
+    <script>
+        const timeSpan = document.getElementById('time-remaining');
+  
+        if (timeSpan) {
+            let timeLeft = parseInt(timeSpan.getAttribute('data-seconds'), 10);
+
+            const interval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                timeSpan.textContent = "Session Expired";
+
+                // Update the HTML content immediately without reloading
+                //i recommend making this say the same thing as the else above 
+                    // otherwise when you refresh the page it will appear as else 
+                    // momentarily than this if a session has been created and expired
+                document.getElementById('auth-status-container').innerHTML = 
+                    `<p>Your session has expired.: Click here to Login again.</p>`;
+
+                return;
+            }
+
+            // Calculate minutes and seconds
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            // Display formatted time (e.g., 14:05)
+            timeSpan.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            timeLeft--;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>

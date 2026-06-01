@@ -18,4 +18,34 @@ router.get(/^\/signup(\/)?(.html)?$/, (req, res) => {
     res.sendFile(path.join(__dirname, "..", "views", "signup.html"));
 });
 
+
+//this should be deleted later
+//403.ejs  
+router.get(/^\/403(\/)?(.ejs)?$/, (req, res) => {
+    const token = req.cookies.guest_token;
+
+    let isAuthenticated = false;
+    
+    if (token) {
+        // Decode base64 JWT payload
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
+        
+        // Send time remaining in seconds to EJS template
+        const currentTime = Math.floor(Date.now() / 1000);
+        const secondsRemaining = payload.exp - currentTime;
+
+        isAuthenticated = true;
+
+        res.render(path.join(__dirname, "..", "views", "403.ejs"), { secondsRemaining, isAuthenticated });
+    } else {
+        isAuthenticated = false;
+        res.redirect('error.html');
+    }
+});
+
+
+
+
 module.exports = router;

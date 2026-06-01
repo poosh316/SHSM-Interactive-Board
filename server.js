@@ -11,6 +11,13 @@ const spamTime = 300;
 const session = require('express-session');
 require('dotenv').config();
 
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+require('dotenv').config(); 
+app.set('view engine', 'ejs');
+
+
+
 var userIps = [];
 
 const piIp = "10.191.28.102";
@@ -27,6 +34,7 @@ app.use((req, res, next) => {
     // console.log(req.ip);
     
     // console.log("\"" + req.path + "\" to: " + "actionLog");
+    console.log("\"" + req.path + "\" to: " + "actionLog");
     if (/^\/info/.test(req.path) == false) {
         actionLog(req.path);
     } else {
@@ -39,18 +47,21 @@ app.use((req, res, next) => {
 
 //session setup goes before routes
 app.use(session({
-    secret: 'process.env.SESSION_SECRET',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
+    rolling: false,
+    cookie: { 
         maxAge: 600000, //10 minutes in milliseconds
-        httpOnly: true,
-        sameSite: 'lax'
-    }
+        httpOnly: true,  
+        sameSite: 'lax'   
+    } 
 }));
 
 
 app.use(express.json());
+
+app.use(cookieParser(process.env.SIGNING_SECRET));
 
 app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
@@ -177,7 +188,7 @@ app.get(/.*/, (req, res) => {
 
 
 //starts listening on the port
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Server running on port ${PORT}`);
     await doQuery('UPDATE drone SET droneOn= 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
 });
