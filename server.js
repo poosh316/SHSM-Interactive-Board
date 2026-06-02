@@ -8,10 +8,9 @@ const mysql = require('mysql2');
 const { worker } = require('cluster');
 const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'));
 const spamTime = 300;
+require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
-require('dotenv').config();
 app.set('view engine', 'ejs');
 
 const crypto = require('crypto');
@@ -45,9 +44,6 @@ app.use((req, res, next) => {
     // console.log(JSON.stringify(req.body));
     next();//go to the next middleware function
 });
-
-
-
 
 
 app.use(express.json());

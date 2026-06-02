@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 
 router.get(/.*/, (req, res, next) => {
@@ -27,7 +28,7 @@ router.get(/.*/, (req, res, next) => {
 
         // 4. Return success state back to the frontend trigger
         console.log('Guest session started (routes/cookies.js)');
-        res.redirect("/home");
+        res.redirect("/");
         // res.status(200).json({ 
         //     success: true, 
         //     message: 'Int session started successfully' 
