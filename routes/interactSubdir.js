@@ -13,7 +13,7 @@ router.get(/^\/$|^\/drone(\/)?$|^\/drone(.ejs)?$/, (req, res) => {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const payload = JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
-        
+
         // Send time remaining in seconds to EJS template
         const currentTime = Math.floor(Date.now() / 1000);
         const secondsRemaining = payload.exp - currentTime;

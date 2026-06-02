@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 router.get('', (req, res) => {
     // 1. Create unique identity for this anonymous session
@@ -25,10 +26,12 @@ router.get('', (req, res) => {
 
     // 4. Return success state back to the frontend trigger
     console.log('Guest session started (routes/cookies.js)');
-    res.status(200).json({ 
-        success: true, 
-        message: 'Guest session started successfully' 
-    });
+    //send to home file
+    // res.status(200).json({ 
+    //     success: true, 
+    //     message: 'Guest session started successfully' 
+    // });
+    res.redirect('/');
 });
 
 module.exports = router; 
