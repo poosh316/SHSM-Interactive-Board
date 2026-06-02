@@ -15,9 +15,10 @@ require('dotenv').config();
 app.set('view engine', 'ejs');
 
 const crypto = require('crypto');
-const timer = 600000;  //10 minutes in milliseconds
-var current = 0;
-var prev = 0;
+const timer = 300000;  //10 minutes in milliseconds
+
+var current = 1234;
+var prev = 1234;
 
 
 
@@ -46,18 +47,7 @@ app.use((req, res, next) => {
 });
 
 
-//session setup goes before routes
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    rolling: false,
-    cookie: {
-        maxAge: 600000, //10 minutes in milliseconds
-        httpOnly: true,
-        sameSite: 'lax'
-    }
-}));
+
 
 
 app.use(express.json());
@@ -77,8 +67,8 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 //check if user has extra access
 app.use("/cookies", (req, res, next) => {
-    app.set("currentNumber", currentCode);
-    app.set("prevNumber", "1234");
+    app.set("currentNum", current);
+    app.set("prevNum", prev);
     next();
 })
 app.use("/cookies", require('./routes/cookies'));
@@ -128,7 +118,9 @@ app.post("/info", async (req, res) => {
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             const payload = JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
             // console.log(payload.code);
-            if (payload.code == currentCode || payload.code == lastCode) {
+            if (payload.code == current || payload.code == prev) {
+                console.log("good");
+                console.log(payload.code);
                 if (userIps.indexOf(req.ip) == -1) {
                     console.log(req.ip);
                     userIps.push(req.ip);
@@ -185,7 +177,13 @@ app.post("/info", async (req, res) => {
                     console.log(userIps);
                     console.log("your ip of " + req.ip + "has done a reqest already");
                 }
+            }else{
+                logEvent()
+                console.log("WRONG CODE");
+                console.log(payload.code);
             }
+        }else{
+            console.log("no code");
         }
     } catch (err) {
         console.log(err);
@@ -204,6 +202,8 @@ app.get(/.*/, (req, res) => {
 //starts listening on the port
 app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Server running on port ${PORT}`);
+    updateCode();
+    updateCode();
     await doQuery('UPDATE drone SET droneOn= 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
 });
 
@@ -232,6 +232,11 @@ const doQuery = async (sql) => {
 
 // generates a very long random string
 setInterval( async () => {
+    updateCode();
+}, timer);
+
+const updateCode = async () =>{
     prev = current;
     current = crypto.randomUUID();
-}, timer);
+    console.log("newCode: " + current);
+}
