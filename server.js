@@ -8,11 +8,9 @@ const mysql = require('mysql2');
 const { worker } = require('cluster');
 const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'));
 const spamTime = 300;
-const session = require('express-session');
 require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 require('dotenv').config(); 
 app.set('view engine', 'ejs');
 
@@ -48,20 +46,6 @@ app.use((req, res, next) => {
     // console.log(JSON.stringify(req.body));
     next();//go to the next middleware function
 });
-
-
-//session setup goes before routes
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    rolling: false,
-    cookie: { 
-        maxAge: 600000, //10 minutes in milliseconds
-        httpOnly: true,  
-        sameSite: 'lax'   
-    } 
-}));
 
 
 app.use(express.json());
