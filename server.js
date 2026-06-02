@@ -13,7 +13,12 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 require('dotenv').config();
 app.set('view engine', 'ejs');
-let currentCode = "4321";
+
+const crypto = require('crypto');
+const timer = 600000;  //10 minutes in milliseconds
+var current = 0;
+var prev = 0;
+
 
 
 var userIps = [];
@@ -196,14 +201,13 @@ app.get(/.*/, (req, res) => {
 });
 
 
-
 //starts listening on the port
 app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Server running on port ${PORT}`);
     await doQuery('UPDATE drone SET droneOn= 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
 });
 
-
+// error handling/logging
 const doQuery = async (sql) => {
     return new Promise((resolve, reject) => {
         try {
@@ -225,3 +229,9 @@ const doQuery = async (sql) => {
         }
     })
 }
+
+// generates a very long random string
+setInterval( async () => {
+    prev = current;
+    current = crypto.randomUUID();
+}, timer);
