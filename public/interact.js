@@ -21,13 +21,13 @@ if (currentWindow == "drone") {
         method: "GET"
     }).then(async response => {
         res = await response.json();
-        console.log(res);
-        console.log(res[0].droneOn);
+        // console.log(res);
+        // console.log(res[0].droneOn);
         if (res[0].droneOn == 1) {
             state = 1
             drone.src = "/images/droneOn.gif"
         }
-    })
+    });
     setInterval(async () => {
         fetch('/info/drone/droneOn/1', {
             method: "GET"
@@ -46,7 +46,7 @@ if (currentWindow == "drone") {
                 }
                 state = 0
             }
-        })
+        });
     }, 1000);
     droneBtn.addEventListener("click", () => {
         if (state == 0) {
@@ -79,7 +79,7 @@ if (currentWindow == "lights") {
         greenSlider.value = res[1].lightValue;
         blueSlider.value = res[2].lightValue;
         setSample();
-    })
+    });
     
     submitButton.addEventListener("click", () => {
         fetch("/info", {
