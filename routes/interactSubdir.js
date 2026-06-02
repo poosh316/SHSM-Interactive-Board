@@ -4,7 +4,7 @@ const path = require('path');
 
 //temporary file and file path to be serverd
 router.get(/^\/$|^\/drone(\/)?$|^\/drone(.ejs)?$/, (req, res) => {
-    const token = req.cookies.guest_token;
+    const token = req.cookies.int_token;
 
     let isAuthenticated = false;
         
@@ -29,7 +29,7 @@ router.get(/^\/$|^\/drone(\/)?$|^\/drone(.ejs)?$/, (req, res) => {
 });
 
 router.get(/^\/lights(\/)?(.ejs)?$/, (req, res) => {
-    const token = req.cookies.guest_token;
+    const token = req.cookies.int_token;
 
     let isAuthenticated = false;
         

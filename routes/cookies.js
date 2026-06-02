@@ -3,20 +3,21 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
+
 router.get('', (req, res) => {
     // 1. Create unique identity for this anonymous session
     //temporary guest authentication (stateless, anonymous)
-    const guestPayload = {
-        isGuest: true,
-        guestId: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        permissions: {canWrite: true}
+    console.log("banana");
+    const intPayload = {
+        intId: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        code: req.app.get("currentNumber")
     };
 
     // 2. Sign the JWT with a 10-minute expiration
-    const token = jwt.sign(guestPayload, process.env.SESSION_SECRET, { expiresIn: '10m' });
+    const token = jwt.sign(intPayload, process.env.SESSION_SECRET, { expiresIn: '10m' });
 
     // 3. Bake the token into an HTTP-only cookie
-    res.cookie('guest_token', token, {   //always the same token
+    res.cookie('int_token', token, {   //always the same token
         httpOnly: true,       // Secures the cookie from frontend script access
         secure: process.env.NODE_ENV === 'production', // true in production, false in local dev
         sameSite: 'strict',   // CSRF mitigation
@@ -27,7 +28,7 @@ router.get('', (req, res) => {
     console.log('Guest session started (routes/cookies.js)');
     res.status(200).json({ 
         success: true, 
-        message: 'Guest session started successfully' 
+        message: 'Int session started successfully' 
     });
 });
 
