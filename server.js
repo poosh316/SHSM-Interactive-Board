@@ -9,7 +9,6 @@ const { worker } = require('cluster');
 const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'));
 
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 require('dotenv').config(); 
 app.set('view engine', 'ejs');
 
@@ -30,29 +29,6 @@ app.use((req, res, next) => {
 });
 
 
-//-----------------------
-
-
-//session setup goes before routes
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    rolling: false,
-    cookie: { 
-        maxAge: 600000, //10 minutes in milliseconds
-        httpOnly: true,  
-        sameSite: 'lax'   
-    } 
-}));
-
-
-//for sending stuff to frontend
-//...
-
-
-//-----------------------
-
 
 app.use(express.json());
 
@@ -69,14 +45,9 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/', express.static(path.join(__dirname, '/build')));  //comment this out and move styles.css under stylesheet to the public folder to edit the styles.css without having to run npm run cssnano all the time
 
 
-//-----------------------
-
-
 //check if user has extra access
 app.use("/cookies", require('./routes/cookies'));
 
-
-//-----------------------
 
 
 //an exception case if the link is wrong it will send a 404 error
