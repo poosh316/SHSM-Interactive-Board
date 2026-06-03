@@ -12,7 +12,6 @@ const session = require('express-session');
 require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 require('dotenv').config(); 
 app.set('view engine', 'ejs');
 
@@ -57,7 +56,7 @@ app.use(session({
     saveUninitialized: false,
     rolling: false,
     cookie: { 
-        maxAge: 600000, //10 minutes in milliseconds
+        maxAge: timer, //10 minutes in milliseconds
         httpOnly: true,  
         sameSite: 'lax'   
     } 
