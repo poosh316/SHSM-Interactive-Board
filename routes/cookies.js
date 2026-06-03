@@ -26,7 +26,7 @@ router.get('', (req, res) => {
 
     // 4. Return success state back to the frontend trigger
     console.log('Guest session started (routes/cookies.js)');
-    res.redirect(path.join(__dirname, "..", "views", "home.html"));
+    res.redirect("/");
 });
 
 module.exports = router; 

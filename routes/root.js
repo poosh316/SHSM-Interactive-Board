@@ -45,6 +45,16 @@ router.get(/^\/403(\/)?(.ejs)?$/, (req, res) => {
     }
 });
 
+router.get('/del', (req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict'
+    });
+    console.log("session deleted");
+    res.redirect("/");
+});
+
 
 
 
