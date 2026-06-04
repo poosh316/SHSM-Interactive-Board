@@ -46,7 +46,7 @@ router.get(/^\/403(\/)?(.ejs)?$/, (req, res) => {
 });
 
 router.get('/del', (req, res) => {
-    res.clearCookie('token', {
+    res.clearCookie('guest_token', {
         httpOnly: true,
         secure: true,
         sameSite: 'strict'
