@@ -62,12 +62,12 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 
 //check if user has extra access
-app.use("/cookies", (req, res, next) => {
+app.use("/c", (req, res, next) => {
     app.set("currentNum", current);
     app.set("prevNum", prev);
     next();
 })
-app.use("/cookies", require('./routes/cookies'));
+app.use("/c", require('./routes/cookies'));
 
 
 //an exception case if the link is wrong it will send a 404 error
