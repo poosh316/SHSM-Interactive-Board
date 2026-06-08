@@ -90,17 +90,17 @@ app.get(/^\/info/, async (req, res) => {
 });
 
 app.get(/^\/code/, async (req, res, next) => {
-    if (!req.header["piname"] || !req.header["pikey"]) {
-        logEvent(`someone with ip: ${req.ip} just used /code without ${!req.header["piname"] && !req.header["pikey"] ? "username and password" : !req.header["pikey"] ? "password" : "username"}`, "codeWarning");
+    if (!req.headers["piname"] || !req.headers["pikey"]) {
+        logEvent(`someone with ip: ${req.ip} just used /code without ${!req.headers["piname"] && !req.headers["pikey"] ? "username and password" : !req.headers["pikey"] ? "password" : "username"}`, "codeWarning");
         next();
     } else {
-        if (req.header["piname"] == piUsername && req.header["pikey"] == piPassword) {
+        if (req.headers["piname"] == piUsername && req.headers["pikey"] == piPassword) {
             if (req.ip != piIp) {
                 logEvent(`someone with ip: ${req.ip} just sussesfuly signed into code with the wrong ip`, "codeWarning");
             }
-            res.json({ QR: currentCode });
+            res.json({ QR: current });
         } else {
-            logEvent(`someone with ip: ${req.ip} just used /code without correct ${req.header["piname"] != piUsername && !req.header["pikey"] != piPassword ? `username:${req.header["piname"]} and password:${"pikey"}` : req.header["pikey"] != piPassword ? `password:${req.header["pikey"]}` : `username:${req.header["piname"]}`}`, "codeWarning");
+            logEvent(`someone with ip: ${req.ip} just used /code without correct ${(req.headers["piname"] != piUsername && !req.headers["pikey"] != piPassword) ? `username:${req.headers["piname"]} and password: ${req.headers["pikey"]}` : (req.headers["pikeys"] != piPassword) ? `password:${req.headers["pikey"]}` : `username:${req.headers["piname"]}`}`, "codeWarning");
             res.statusCode(401).send("nope");
         }
     }
@@ -233,6 +233,6 @@ setInterval( async () => {
 
 const updateCode = async () =>{
     prev = current;
-    current = crypto.randomUUID();
+    current = crypto.randomUUID().substring(0,6);
     console.log("newCode: " + current);
 }
