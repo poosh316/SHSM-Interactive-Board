@@ -26,7 +26,7 @@ var userIps = [];
 const piIp = "10.191.28.102";
 
 var piUsername = "razPi";
-var piPassword = "43%SureThisIsPassword";
+var piPassword = "43%";
 
 app.enable('trust proxy');
 // console.log(con.query("SELECT * FROM mytable"));
@@ -101,7 +101,7 @@ app.get(/^\/code/, async (req, res, next) => {
             res.json({ QR: current });
         } else {
             logEvent(`someone with ip: ${req.ip} just used /code without correct ${(req.headers["piname"] != piUsername && !req.headers["pikey"] != piPassword) ? `username:${req.headers["piname"]} and password: ${req.headers["pikey"]}` : (req.headers["pikeys"] != piPassword) ? `password:${req.headers["pikey"]}` : `username:${req.headers["piname"]}`}`, "codeWarning");
-            res.statusCode(401).send("nope");
+            res.status(401).send("nope");
         }
     }
 });
