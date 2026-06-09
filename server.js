@@ -52,6 +52,12 @@ app.use(cookieParser(process.env.SIGNING_SECRET));
 
 app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
+app.use("/int", (req,res,next) =>{
+    app.set("currentNum", current);
+    app.set("prevNum", prev);
+    next();
+});
+
 app.use("/int", require('./routes/interactSubdir'));
 
 

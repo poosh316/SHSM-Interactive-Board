@@ -50,7 +50,7 @@ if (currentWindow == "drone") {
     }, 1000);
     droneBtn.addEventListener("click", () => {
         if (state == 0) {
-            drone.src = "/images/droneOn.gif";
+            // drone.src = "/images/droneOn.gif";
             state = 1
             fetch("/info", {
                 method: "POST",
