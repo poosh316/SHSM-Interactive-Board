@@ -26,7 +26,7 @@ var userIps = [];
 const piIp = "10.191.28.102";
 
 var piUsername = "razPi";
-var piPassword = "43%SureThisIsPassword";
+var piPassword = "43%";
 
 app.enable('trust proxy');
 // console.log(con.query("SELECT * FROM mytable"));
@@ -52,6 +52,12 @@ app.use(cookieParser(process.env.SIGNING_SECRET));
 
 app.use("/", require('./routes/root'));//relocates the user to the link relating to the url if it is a valid link
 
+app.use("/int", (req,res,next) =>{
+    app.set("currentNum", current);
+    app.set("prevNum", prev);
+    next();
+});
+
 app.use("/int", require('./routes/interactSubdir'));
 
 
@@ -62,12 +68,12 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 
 //check if user has extra access
-app.use("/cookies", (req, res, next) => {
+app.use("/c", (req, res, next) => {
     app.set("currentNum", current);
     app.set("prevNum", prev);
     next();
 })
-app.use("/cookies", require('./routes/cookies'));
+app.use("/c", require('./routes/cookies'));
 
 
 //an exception case if the link is wrong it will send a 404 error
@@ -101,7 +107,7 @@ app.get(/^\/code/, async (req, res, next) => {
             res.json({ QR: current });
         } else {
             logEvent(`someone with ip: ${req.ip} just used /code without correct ${(req.headers["piname"] != piUsername && !req.headers["pikey"] != piPassword) ? `username:${req.headers["piname"]} and password: ${req.headers["pikey"]}` : (req.headers["pikeys"] != piPassword) ? `password:${req.headers["pikey"]}` : `username:${req.headers["piname"]}`}`, "codeWarning");
-            res.statusCode(401).send("nope");
+            res.status(401).send("nope");
         }
     }
 });

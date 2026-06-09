@@ -34,7 +34,7 @@ router.get(/.*/, (req, res, next) => {
         //     message: 'Int session started successfully' 
         // });
     } else {
-        next();
+        res.redirect("/int/lights");
     }
 });
 
