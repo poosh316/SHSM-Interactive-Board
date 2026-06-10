@@ -38,10 +38,12 @@
         </h4>
     </div>
 
-    <img id="drone" src="/images/droneOff.png" alt="drone" />
-    <br>
-    <br>
-    <button id="droneBtn">Click to run the drone for 10 seconds</button>
+    <div style="text-align:center">
+        <img id="drone" src="/images/droneOff.png" alt="drone" />
+        <br>
+        <br>
+        <button id="droneBtn">Click to run the drone for 10 seconds</button>
+    </div>
 
 
     <div id="auth-status-container">
@@ -49,19 +51,23 @@
             <!-- Show this text if the cookie exists and JWT is valid -->
             <p>Welcome back, user!</p>
         <% } else { %>
-            <!-- Show this text if there is no valid cookie -->
+
+            <script>
+                // style the droneBtn to look disabled
+                const droneBtn = document.getElementById('droneBtn');
+                droneBtn.className = "disabledBtn";
+                droneBtn.inert = true;
+            </script>
+            
             <p>Your session has expired. Scan the QR code again to resume.</p>
         <% } %>
     </div>
-    <!--you will also need to change it bellow in the script where it says
-    document.getElementById('auth-status-container').innerHTML-->
-    
 
-	<script src="/script.js"></script>
+
     <script src="/interact.js"></script>
     <script>
         const timeSpan = document.getElementById('time-remaining');
-  
+        
         if (timeSpan) {
             let timeLeft = parseInt(timeSpan.getAttribute('data-seconds'), 10);
 
@@ -69,11 +75,12 @@
             if (timeLeft <= 0) {
                 clearInterval(interval);
                 timeSpan.textContent = "Session Expired";
+               
+                // style the droneBtn to look disabled
+                droneBtn.className = "disabledBtn";
+                droneBtn.inert = true;
 
                 // Update the HTML content immediately without reloading
-                //i recommend making this say the same thing as the else above 
-                    // otherwise when you refresh the page it will appear as else 
-                    // momentarily than this if a session has been created and expired
                 document.getElementById('auth-status-container').innerHTML = 
                     `<p>Your session has expired. Scan the QR code again to resume.</p>`;
                 

@@ -12,11 +12,10 @@ console.log(currentWindow);
 const drone = document.getElementById('drone');
 const droneBtn = document.getElementById('droneBtn');
 
-console.log(currentWindow);
-
 
 if (currentWindow == "drone") {
     var state = 0;
+
     fetch('/info/drone/droneOn/1', {
         method: "GET"
     }).then(async response => {
@@ -28,6 +27,7 @@ if (currentWindow == "drone") {
             drone.src = "/images/droneOn.gif"
         }
     });
+
     setInterval(async () => {
         fetch('/info/drone/droneOn/1', {
             method: "GET"
@@ -48,6 +48,7 @@ if (currentWindow == "drone") {
             }
         });
     }, 1000);
+
     droneBtn.addEventListener("click", () => {
         if (state == 0) {
             drone.src = "/images/droneOn.gif";
@@ -73,12 +74,16 @@ if (currentWindow == "lights") {
     fetch('/info/lights/*', {
         method: "GET"
     }).then(async response => {
-        res = await response.json();
-        console.log(res);
-        redSlider.value = res[0].lightValue;
-        greenSlider.value = res[1].lightValue;
-        blueSlider.value = res[2].lightValue;
-        setSample();
+        try {
+            res = await response.json();
+            console.log(res);
+            redSlider.value = res[0].lightValue;
+            greenSlider.value = res[1].lightValue;
+            blueSlider.value = res[2].lightValue;
+            setSample();
+        } catch (err) {
+            console.log("database not avaliable");
+        }
     });
     
     submitButton.addEventListener("click", () => {
