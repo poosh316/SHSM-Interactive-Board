@@ -194,6 +194,7 @@ p {
 span {
     displaY: inline-block;
     vertical-align: top;
+    -webkit-text-size-adjust: none;
 }
 
 button {
