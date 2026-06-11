@@ -28,13 +28,19 @@ router.get(/.*/, (req, res, next) => {
 
         // 4. Return success state back to the frontend trigger
         console.log('Guest session started (routes/cookies.js)');
-        res.redirect("/");
+        res.status(200).send(
+            `<script>
+                setTimeout(() => {
+                    window.location.href = "/int/lights"
+                },10)
+            </script>`
+        );
         // res.status(200).json({ 
         //     success: true, 
         //     message: 'Int session started successfully' 
         // });
     } else {
-        res.redirect("/int/lights");
+        res.redirect("/");
     }
 });
 
