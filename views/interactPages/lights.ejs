@@ -42,7 +42,7 @@
 
 
     <div style="display:grid; grid-auto-flow:column; gap:10px;">
-        <span style="width:100%; margin:-1px;" id="lightChoices">
+        <span style="width:100%; margin:-1px;">
             <p>red</p>
             <input class="colourSlider" id="red" type="range" min="0" max="255" />
         
@@ -53,7 +53,7 @@
             <input class="colourSlider" id="blue" type="range" min="0" max="255" />
         </span>
 
-        <span style="margin:-1px; text-align:center;">
+        <span style="height:100%; margin:-1px; text-align:center;">
             <span id="sample"></span>
         </span>
     </div>
@@ -61,7 +61,7 @@
     <br>
     <br>
 
-    <div style="text-align:center">
+    <div style="width:100%; text-align:center;">
         <button id="submit">Set Colour</button>
     </div>
 
@@ -127,8 +127,14 @@
             
             // Display formatted time (e.g., 14:05)
             timeSpan.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            //alert popup
+            if(timeLeft-1==0){
+                alert("Time expired. Please scan the QR code again.");
+            }
             
             timeLeft--;
+            
             }, 1000);
         }
     </script>

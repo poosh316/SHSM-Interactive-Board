@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3500; //sets the port as 3500
 const mysql = require('mysql2');
 const { worker } = require('cluster');
 const pool = require(path.join(__dirname, 'middleware', 'makeDataBase.js'));
-const spamTime = 300;
+const spamTime = 3000;
 require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
