@@ -4,12 +4,12 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
-
-router.get(/.*/, (req, res, next) => {
+//         /.*/
+router.get('', (req, res, next) => {
     // 1. Create unique identity for this anonymous session
     //temporary guest authentication (stateless, anonymous)
-    console.log(req.url.slice(1));
-    if (req.url.slice(1) == req.app.get("currentNum") || req.url.slice(1) == req.app.get("prevNum")) {
+    // console.log(req.url.slice(1));
+    // if (req.url.slice(1) == req.app.get("currentNum") || req.url.slice(1) == req.app.get("prevNum")) {
         const intPayload = {
             intId: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             code: ((req.url.slice(1) == req.app.get("currentNum")) ? req.app.get("currentNum") : req.app.get("prevNum"))
@@ -39,9 +39,9 @@ router.get(/.*/, (req, res, next) => {
         //     success: true, 
         //     message: 'Int session started successfully' 
         // });
-    } else {
-        res.redirect("/");
-    }
+    // } else {
+    //     res.redirect("/");
+    // }
 });
 
 module.exports = router;
