@@ -35,7 +35,9 @@ app.use((req, res, next) => {
     // console.log(req.ip);
 
     // console.log("\"" + req.path + "\" to: " + "actionLog");
-    console.log("\"" + req.path + "\" to: " + "actionLog");
+    if(req.ip != piIp){
+        console.log("\"" + req.path + "\" to: " + "actionLog");
+    }
     if (/^\/info/.test(req.path) == false) {
         actionLog(req.path);
     } else {
