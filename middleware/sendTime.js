@@ -23,7 +23,7 @@ const timeExpiry = async (req,res) => {
                 isAuthenticated = true;
             }else{
                 //delete the cookie
-                res.clearCookie('int_token', { //
+                res.clearCookie('int_token', { 
                     path: "/",
                     httpOnly: true,
                     secure: true,
