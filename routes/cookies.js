@@ -25,7 +25,6 @@ router.get(/.*/, (req, res, next) => {
         });
 
         // return success and send to lights page
-        console.log('Guest session started (routes/cookies.js)');
         res.status(200).send(
             `<script>
                 setTimeout(() => {

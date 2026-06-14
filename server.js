@@ -74,6 +74,7 @@ app.use("/c", (req, res, next) => {
     app.set("prevNum", prev);
     next();
 })
+//send them to create a cookie
 app.use("/c", require('./routes/cookies'));
 
 
