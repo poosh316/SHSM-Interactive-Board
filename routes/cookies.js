@@ -4,11 +4,11 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
-
+// /.*/ is regex for anything any character. This means this will run for any path with /c/# where # is any value(s)
 router.get(/.*/, (req, res, next) => {
     // 1. Create unique identity for this anonymous session
     //temporary guest authentication (stateless, anonymous)
-    console.log(req.url.slice(1));
+    //checks if the digits after /c/ are equal to the current number or previous number set in server.js
     if (req.url.slice(1) == req.app.get("currentNum") || req.url.slice(1) == req.app.get("prevNum")) {
         const intPayload = {
             intId: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -18,11 +18,11 @@ router.get(/.*/, (req, res, next) => {
         // 2. Sign the JWT with a 10-minute expiration
         const token = jwt.sign(intPayload, process.env.SESSION_SECRET, { expiresIn: '10m' });
 
-        // 3. Bake the token into an HTTP-only cookie
-        res.cookie('int_token', token, {   //always the same token
-            httpOnly: true,       // Secures the cookie from frontend script access
-            secure: process.env.NODE_ENV === 'production', // true in production, false in local dev
-            sameSite: 'strict',   // CSRF mitigation
+        // make the token into an HTTP-only cookie
+        res.cookie('int_token', token, {   
+            httpOnly: true,       
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: 'strict',   
             maxAge: 10 * 60 * 1000 // Force browser auto-drop after exactly 10 minutes
         });
 
