@@ -10,7 +10,6 @@ router.get(/.*/, (req, res, next) => {
     if (req.url.slice(1) == req.app.get("currentNum") || req.url.slice(1) == req.app.get("prevNum")) {
         //create unique identity for this session
         const intPayload = {
-            intId: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             code: ((req.url.slice(1) == req.app.get("currentNum")) ? req.app.get("currentNum") : req.app.get("prevNum"))
         };
 
