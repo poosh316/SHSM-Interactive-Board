@@ -16,7 +16,7 @@
             <li><a href="/home">Home</a></li>
             <li><a href="/about">About</a></li>
             <li class="dropdown">
-                <a class="current" href="javascript:void(0)" class="dropbtn">Interact</a>
+                <a class="current" href="/javascript:void(0)" class="dropbtn">Interact</a>
                 <div class="dropdownList">
                     <a href="/int/lights">Lights</a>
                     <a href="/int/drone">Drone</a>
@@ -43,7 +43,7 @@
 
 
     <div style="display:grid; grid-auto-flow:column; gap:10px;">
-        <span style="width:100%; margin:-1px;" id="lightChoices">
+        <span style="width:100%; margin:-1px;">
             <p>red</p>
             <input class="colourSlider" id="red" type="range" min="0" max="255" />
         
@@ -54,7 +54,7 @@
             <input class="colourSlider" id="blue" type="range" min="0" max="255" />
         </span>
 
-        <span style="margin:-1px; text-align:center;">
+        <span style="height:100%; margin:-1px; text-align:center;">
             <span id="sample"></span>
         </span>
     </div>
@@ -62,7 +62,7 @@
     <br>
     <br>
 
-    <div style="text-align:center">
+    <div style="width:100%; text-align:center;">
         <button id="submit">Set Colour</button>
     </div>
 
