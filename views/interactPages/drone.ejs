@@ -31,8 +31,9 @@
     <div class="disclaimer">
         <h4>
         <div>
-            Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>">
-                Loading...
+            <!--secondsRemaining is a variable sent from sendTime.js-->
+            Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>"> 
+                Loading... <!--shows Loading... until secondsRemaining is sent from sendTime.js-->
             </span>
         </div>
         </h4>

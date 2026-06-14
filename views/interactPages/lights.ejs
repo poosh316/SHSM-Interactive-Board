@@ -31,8 +31,9 @@
     <div class="disclaimer">
         <h4>
         <div>
-            Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>">
-                Loading...
+            <!--secondsRemaining is a variable sent from sendTime.js-->
+            Session expires in: <span id="time-remaining" data-seconds="<%= secondsRemaining %>"> 
+                Loading... <!--shows Loading... until secondsRemaining is sent from sendTime.js-->
             </span>
         </div>
         </h4>
@@ -71,7 +72,7 @@
             <!-- Show this text if the cookie exists and JWT is valid -->
             <p>Welcome back, user!</p>
         <% } else { %>
-
+            <!-- Show this if not -->
             <script>
                 const red = document.getElementById('red');
                 const green = document.getElementById('green');
@@ -102,9 +103,13 @@
             const interval = setInterval(() => {
             if (timeLeft <= 0) {
                 clearInterval(interval);
-                timeSpan.textContent = "Session Expired";
 
-                // style button and sliders to look disabled.
+                //Putting stuff here will make it so it changes when the session expires 
+                    // this will change the stuff without needing to reload it
+
+                timeSpan.textContent = "Session Expired";  //update timer to say Session Expired if expired
+
+                // style button and sliders to look disabled. 
                 red.style.backgroundColor = `rgb(101, 101, 101)`;
                 red.inert = true;
                 green.style.backgroundColor = `rgb(101, 101, 101)`;
