@@ -34,6 +34,7 @@ const timeExpiry = async (req,res) => {
             secondsRemaining = 0;
         }
     }catch(err){
+        if(req.app.debug >= 2)
         console.log(err);
     }
     //send isAuthenticated and secondsRemaining in a JSON

@@ -3,11 +3,17 @@ const redSlider = document.getElementById('red');
 const greenSlider = document.getElementById('green');
 const blueSlider = document.getElementById('blue');
 
+const debug = 0;
+
+if(debug >= 2){
 console.log("starting script");
+}
 const submitButton = document.getElementById("submit")
 const currentWindow = document.URL.split('/')[document.URL.split('/').length - 1];
 
-console.log(currentWindow);
+if(debug >= 2){
+    console.log(currentWindow);
+}
 const drone = document.getElementById('drone');
 const droneBtn = document.getElementById('droneBtn');
 
@@ -19,8 +25,6 @@ if (currentWindow == "drone") {
         method: "GET"
     }).then(async response => {
         res = await response.json();
-        // console.log(res);
-        // console.log(res[0].droneOn);
         if (res[0].droneOn == 1) {
             state = 1
             drone.src = "/images/droneOn.gif"
@@ -32,8 +36,6 @@ if (currentWindow == "drone") {
             method: "GET"
         }).then(async response => {
             res = await response.json();
-            // console.log(res);
-            // console.log(res[0].droneOn);
             if (res[0].droneOn == 1) {
                 if (state == 0) {
                     drone.src = "/images/droneOn.gif";
@@ -51,7 +53,6 @@ if (currentWindow == "drone") {
     droneBtn.addEventListener("click", () => {
         if (state == 0) {
             // drone.src = "/images/droneOn.gif";
-            state = 1
             fetch("/info", {
                 method: "POST",
                 body: JSON.stringify({
@@ -75,13 +76,17 @@ if (currentWindow == "lights") {
     }).then(async response => {
         try {
             res = await response.json();
-            console.log(res);
+            if(debug >= 3){
+                console.log(res);
+            }
             redSlider.value = res[0].lightValue;
             greenSlider.value = res[1].lightValue;
             blueSlider.value = res[2].lightValue;
             setSample();
         } catch (err) {
-            console.log("database not avaliable");
+            if(debug >= 1){
+                console.log("database not avaliable");
+            }
         }
     });
     

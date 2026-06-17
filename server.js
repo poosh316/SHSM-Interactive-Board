@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
 
 const crypto = require('crypto');
-const timer = 300000;  //10 minutes in milliseconds
+const timer = 600000;  //10 minutes in milliseconds
 
 var current = 1234;
 var prev = 1234;
@@ -28,6 +28,11 @@ const piIp = "10.191.28.102";
 var piUsername = "razPi";
 var piPassword = "43%";
 
+
+const debug = 0;
+const logLevel = 0;
+
+
 app.enable('trust proxy');
 // console.log(con.query("SELECT * FROM mytable"));
 //this section is just here for loging and debuging and stays at the top to be sure that it runs every time and logs what happened when a request comes in
@@ -36,17 +41,28 @@ app.use((req, res, next) => {
 
     // console.log("\"" + req.path + "\" to: " + "actionLog");
     if(req.ip != piIp){
-        console.log("\"" + req.path + "\" to: " + "actionLog");
+        if(debug >= 4){
+            console.log("\"" + req.path + "\" to: " + "actionLog");
+        }
     }
     if (/^\/info/.test(req.path) == false) {
-        actionLog(req.path);
+        if(logLevel >= 4){
+            actionLog(req.path);
+        }
     } else {
-        logEvent(req.path, "requestLog");
+        if(logLevel >= 3){
+            logEvent(req.path, "requestLog");
+        }
     }
     // console.log(JSON.stringify(req.body));
     next();//go to the next middleware function
 });
 
+app.use((req, res, next) => {
+    app.set("debug", debug);
+    app.set("logLevel", logLevel);
+    next();
+});
 
 app.use(express.json());
 
@@ -59,6 +75,8 @@ app.use("/int", (req,res,next) =>{
     app.set("prevNum", prev);
     next();
 });
+
+
 
 app.use("/int", require('./routes/interactSubdir'));
 
@@ -101,16 +119,21 @@ app.get(/^\/info/, async (req, res) => {
 
 app.get(/^\/code/, async (req, res, next) => {
     if (!req.headers["piname"] || !req.headers["pikey"]) {
+        if(debug >= 2)
         logEvent(`someone with ip: ${req.ip} just used /code without ${!req.headers["piname"] && !req.headers["pikey"] ? "username and password" : !req.headers["pikey"] ? "password" : "username"}`, "codeWarning");
         next();
     } else {
         if (req.headers["piname"] == piUsername && req.headers["pikey"] == piPassword) {
             if (req.ip != piIp) {
+                if(debug >= 2){
                 logEvent(`someone with ip: ${req.ip} just sussesfuly signed into code with the wrong ip`, "codeWarning");
+                }
             }
             res.json({ QR: current });
         } else {
-            logEvent(`someone with ip: ${req.ip} just used /code without correct ${(req.headers["piname"] != piUsername && !req.headers["pikey"] != piPassword) ? `username:${req.headers["piname"]} and password: ${req.headers["pikey"]}` : (req.headers["pikeys"] != piPassword) ? `password:${req.headers["pikey"]}` : `username:${req.headers["piname"]}`}`, "codeWarning");
+            if(logLevel >= 1){
+                logEvent(`someone with ip: ${req.ip} just used /code without correct ${(req.headers["piname"] != piUsername && !req.headers["pikey"] != piPassword) ? `username:${req.headers["piname"]} and password: ${req.headers["pikey"]}` : (req.headers["pikeys"] != piPassword) ? `password:${req.headers["pikey"]}` : `username:${req.headers["piname"]}`}`, "codeWarning");
+            }
             res.status(401).send("nope");
         }
     }
@@ -125,12 +148,13 @@ app.post("/info", async (req, res) => {
             const payload = JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
             // console.log(payload.code);
             if (payload.code == current || payload.code == prev) {
-                console.log("good");
-                console.log(payload.code);
+                if(debug >= 3){
+                    console.log("sending info")
+                    console.log("code correct");
+                    console.log(payload.code);
+                }
                 if (userIps.indexOf(req.ip) == -1) {
-                    console.log(req.ip);
                     userIps.push(req.ip);
-                    console.log(req.body);
                     if (req.body.type == 'lights') {
                         if (req.body.red >= 0 && req.body.red <= 255 &&
                             req.body.green >= 0 && req.body.green <= 255 &&
@@ -139,25 +163,30 @@ app.post("/info", async (req, res) => {
                             await doQuery(`update lights set lightValue = ${req.body.green} where lightColor = "green"`)
                             await doQuery(`update lights set lightValue = ${req.body.blue} where lightColor = "blue"`)
                             await doQuery('SELECT * FROM lights').then(results => {
+                                if(debug >= 2)
                                 console.log(results);
                                 const sqlLogMes = `updated lights: ` +
                                     `${results[0][Object.keys(results[0])[1]]}:${results[0][Object.keys(results[0])[2]]} ` +
                                     `${results[1][Object.keys(results[1])[1]]}:${results[1][Object.keys(results[1])[2]]}` +
                                     `${results[2][Object.keys(results[2])[1]]}:${results[2][Object.keys(results[2])[2]]} `
-                                logEvent(sqlLogMes, "/dataBase");
+                                if(logLevel >= 3){
+                                    logEvent(sqlLogMes, "/dataBase");
+                                }
                             })
                         } else {
-                            errorLog("the user put in a bad request as: " + req.body);
+                            if(logLevel >= 2){
+                                errorLog("the user put in a bad request as: " + req.body);
+                            }
                         }
                     } else if (req.body.type == 'drone') {
                         await doQuery('SELECT DroneOn FROM drone').then(async (val) => {
                             if (val[0][Object.keys(val[0])[0]] != req.body.droneOn) {
-                                console.log("working");
                                 await doQuery(`UPDATE drone SET DroneOn = ${req.body.droneOn} where id = 1`)
                                 await doQuery('SELECT * FROM drone').then(results => {
                                     const sqlLogMes = `updated drone` +
                                         `drone ` + `${results[0][Object.keys(results[0])[0]]}: ` + `${results[0][Object.keys(results[0])[1]]}`
-                                    logEvent(sqlLogMes, "/dataBase")
+                                    
+                                        logEvent(sqlLogMes, "/dataBase")
 
                                 })
                                 if (req.body.droneOn == 1) {
@@ -167,8 +196,9 @@ app.post("/info", async (req, res) => {
                                         await doQuery('SELECT * FROM drone').then(results => {
                                             const sqlLogMes = `updated drone` +
                                                 `drone ` + `${results[0][Object.keys(results[0])[0]]}: ` + `${results[0][Object.keys(results[0])[1]]}`
-                                            logEvent(sqlLogMes, "/dataBase");
-
+                                            if(logLevel >= 3){
+                                                logEvent(sqlLogMes, "/dataBase");
+                                            }
                                         })
                                     }, 5000)
                                 }
@@ -176,24 +206,32 @@ app.post("/info", async (req, res) => {
                         })
                     }
                     setTimeout(async () => {
-                        console.log("removing ip: " + userIps[0]);
                         userIps.shift();
                     }, spamTime);
                 } else {
-                    console.log(userIps);
-                    console.log("your ip of " + req.ip + "has done a reqest already");
+                    if(debug >= 3){
+                        console.log(userIps);
+                        console.log("your ip of " + req.ip + "has done a reqest already");
+                    }
                 }
             }else{
-                logEvent()
-                console.log("WRONG CODE");
-                console.log(payload.code);
+                if(logEvent >= 1){
+                    logEvent(`someone with ip ${req.ip} just tried to edit the board without proper code`, "boardEditWarning");
+                }
+                if(debug >= 1){
+                    console.log("a user just tried to use a code that is no longer valid");
+                    console.log(payload.code);
+                }
             }
         }else{
-            console.log("no code");
         }
     } catch (err) {
-        console.log(err);
-        errorLog(err);
+        if(debug >= 0){
+            console.log(err);
+        }
+        if(logLevel >= 0){
+            errorLog(err);
+        }
         // res.sendStatus(404);
     }
 
@@ -207,7 +245,9 @@ app.get(/.*/, (req, res) => {
 
 //starts listening on the port
 app.listen(PORT, '0.0.0.0', async () => {
-    console.log(`Server running on port ${PORT}`);
+    if(debug >= 0){
+        console.log(`Server running on port ${PORT}`);
+    }
     updateCode();
     updateCode();
     await doQuery('UPDATE drone SET droneOn= 0 WHERE ID = 1').then(async () => await console.log("db prepared"))
@@ -230,19 +270,25 @@ const doQuery = async (sql) => {
             // console.log();
         } catch (err) {
             // throw err;
-            console.log(err);
-            errorLog(err);
+            if(debug >= 2){
+                console.log(err);
+            }
+            if(logLevel >= 0){
+                errorLog(err);
+            }
         }
     })
 }
 
 // generates a very long random string
-setInterval( async () => {
+setInterval(async () => {
     updateCode();
 }, timer);
 
 const updateCode = async () =>{
     prev = current;
     current = crypto.randomUUID().substring(0,6);
-    console.log("newCode: " + current);
+    if(debug >= 1){
+        console.log("newCode: " + current);
+    }
 }
