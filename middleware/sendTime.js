@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-
+//this is to validate and respond with time left for a cookie
 const timeExpiry = async (req,res) => {
     let isAuthenticated = false;
     let secondsRemaining = 0;
